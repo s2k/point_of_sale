@@ -1,7 +1,9 @@
-require 'rspec'
+# frozen_string_literal: true
 
-describe 'Replace with real expectation' do
-  it 'should fail at first' do
-    expect(true).to be true
+require_relative 'spec_helper'
+
+describe 'ProductInfoHandler' do
+  it 'Can instantiate a product info handler' do
+    expect { ProductInfoHandler.new }.not_to raise_exception
   end
 end
