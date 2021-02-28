@@ -16,5 +16,9 @@ describe ProductInfoHandler do
     it 'reacts to a bar code reading event' do
       expect { @product_info_handler.on_barcode('1234\n') }.to_not raise_exception
     end
+
+    it 'can be called without an argument' do
+      expect { @product_info_handler.on_barcode }.to_not raise_exception
+    end
   end
 end
