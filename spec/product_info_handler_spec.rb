@@ -38,7 +38,7 @@ describe ProductInfoHandler do
       allow(@subscriber).to receive :update_display
     end
 
-    it 'Accepts subscribers' do
+    it 'Accepts subscriber' do
       expect{@product_info_handler.subscribe @subscriber}.to_not raise_exception
     end
   end
