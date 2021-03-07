@@ -11,6 +11,10 @@ class ProductInfoHandler
     @product_information_service = product_info_service
   end
 
+  # The event handling method
+  # To be called form other objects when a barcode is scanned somehow.
+  # Will notify subscribed objects with a text message (typically product information and p price).
+  #
   def on_barcode(barcode = nil)
     if barcode.nil?
       puts 'WARN: No barcode given'
