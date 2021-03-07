@@ -3,19 +3,15 @@
 require_relative 'spec_helper'
 
 describe ProductInfoHandler do
-  MAX_ID = 2 ** (0.size * 8)
+  MAX_ID = 2**(0.size * 8)
 
-  context 'initialisation' do
-    it 'instantiates a product info handler' do
-      expect { ProductInfoHandler.new }.not_to raise_exception
-    end
+  before(:example) do
+    @product_info_service = instance_double('ProductInformationService')
+    allow(@product_info_service).to receive :find_product_info_for
+    @product_info_handler = ProductInfoHandler.new(@product_info_service)
   end
 
   context 'reacting to an incoming bar code' do
-    before(:example) do
-      @product_info_handler = ProductInfoHandler.new
-    end
-
     it 'reacts to a bar code reading event' do
       expect { @product_info_handler.on_barcode('1234\n') }.to_not raise_exception
     end
@@ -26,6 +22,14 @@ describe ProductInfoHandler do
 
     it 'handles string and integer inputs' do
       expect { @product_info_handler.on_barcode rand(MAX_ID) }.to_not raise_exception
+    end
+  end
+
+  context 'getting product information (price in particular) from … elsewhere' do
+    it 'Again: It can be instantiated' do
+      expect(@product_info_service).to receive(:find_product_info_for).with('47856').and_return( { id: '47856', name: 'Thingy', price: 47.11 } )
+      puts "INFO: Prod info: #{@product_info_service.find_product_info_for('47856').inspect}"
+      expect(@product_info_handler.on_barcode("47856\n")).to be_nil
     end
   end
 end
