@@ -2,9 +2,9 @@
 
 # A ProductInfoHandler accepts input from (presumably) a bar code reader and sends the
 # passed information to subscribed objects.
-# I assume at least one thing will subscribe to this: A service that uses the read product ID
-# queries another service for more details product information... which is finally displayed
-# on an LCD screen of sorts.
+# Assumptions:
+# * The passed product_info_service responds to #find_product_info_for
+# * Subscribers respond to :update
 #
 class ProductInfoHandler
   def initialize(product_info_service)
@@ -26,11 +26,11 @@ class ProductInfoHandler
       return
     end
     if product_information_service.nil?
-      puts 'WARN: No product info service is set up'
+      message = 'WARN: No product info service is set up'
     else
       message = product_information_service.find_product_info_for(barcode.to_s.strip)
-      subscribers.each { |s| s.update message }
     end
+    subscribers.each { |s| s.update message }
     nil
   end
 
