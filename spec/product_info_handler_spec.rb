@@ -37,7 +37,6 @@ describe ProductInfoHandler do
   context 'accepts clients to subscribe and sends updates' do
     before(:each) do
       @subscriber = instance_double('Subscriber')
-      allow(@subscriber).to receive :update
     end
 
     it 'Accepts subscriber' do
