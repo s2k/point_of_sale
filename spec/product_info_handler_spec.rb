@@ -42,7 +42,7 @@ describe ProductInfoHandler do
       expect{@product_info_handler.subscribe @subscriber}.to_not raise_exception
     end
 
-    it 'Notifies subscriber when a barcode events happens' do
+    it 'Notifies subscriber when a barcode event happens' do
       expect(@product_info_service).to receive(:find_product_info_for).with('47856').and_return("Product: Thingy\nPrice: 47.11")
       expect{@product_info_handler.subscribe @subscriber}.to_not raise_exception
       expect(@subscriber).to receive(:update).with("Product: Thingy\nPrice: 47.11")
@@ -52,6 +52,18 @@ describe ProductInfoHandler do
     it 'No one is notified, when nobody subscribes' do
       expect(@product_info_service).to receive(:find_product_info_for).with('47856').and_return("Product: Thingy\nPrice: 47.11")
       expect(@subscriber).not_to receive(:update)
+      @product_info_handler.on_barcode("47856\n")
+    end
+
+
+    it 'Notifies all subscribers when a barcode event happens' do
+      @subscriber2 = instance_double('Display')
+      subscribers = [@subscriber, @subscriber2]
+      expect(@product_info_service).to receive(:find_product_info_for).once.with('47856').and_return("Product: Thingy\nPrice: 47.11")
+      subscribers.each do |s|
+        expect { @product_info_handler.subscribe s }.to_not raise_exception
+        expect(s).to receive(:update).with("Product: Thingy\nPrice: 47.11")
+      end
       @product_info_handler.on_barcode("47856\n")
     end
 
