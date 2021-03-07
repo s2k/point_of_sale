@@ -11,6 +11,7 @@ group :development, :test do
   gem 'rake'
   gem 'rb-fsevent'
   gem 'rspec'
+  gem 'simplecov'
   gem 'terminal-notifier'
   gem 'terminal-notifier-guard'
 end
