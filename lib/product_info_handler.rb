@@ -9,10 +9,11 @@
 class ProductInfoHandler
   def initialize(product_info_service = nil)
     @product_information_service = product_info_service
+    @subscribers = []
   end
 
   def subscribe(client)
-
+    @subscribers << client
   end
 
   # The event handling method
@@ -27,12 +28,13 @@ class ProductInfoHandler
     if product_information_service.nil?
       puts 'WARN: No product info service is set up'
     else
-      product_information_service.find_product_info_for(barcode.to_s.strip)
+      message = product_information_service.find_product_info_for(barcode.to_s.strip)
+      subscribers.each { |s| s.update message }
     end
     nil
   end
 
   private
 
-  attr_reader :product_information_service
+  attr_reader :product_information_service, :subscribers
 end
