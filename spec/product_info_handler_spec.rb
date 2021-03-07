@@ -57,8 +57,7 @@ describe ProductInfoHandler do
     end
 
     it 'Notifies all subscribers when a barcode event happens' do
-      @subscriber2 = instance_double('Display')
-      subscribers = [@subscriber, @subscriber2]
+      subscribers = [@subscriber, instance_double('Display')]
       expect(@product_info_service).to receive(:find_product_info_for).once.with('47856').and_return(MESSAGE_TEXT)
       subscribers.each do |s|
         expect { @product_info_handler.subscribe s }.to_not raise_exception
