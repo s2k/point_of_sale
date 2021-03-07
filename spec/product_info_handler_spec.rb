@@ -48,5 +48,12 @@ describe ProductInfoHandler do
       expect(@subscriber).to receive(:update).with("Product: Thingy\nPrice: 47.11")
       @product_info_handler.on_barcode("47856\n")
     end
+
+    it 'No one is notified, when nobody subscribes' do
+      expect(@product_info_service).to receive(:find_product_info_for).with('47856').and_return("Product: Thingy\nPrice: 47.11")
+      expect(@subscriber).not_to receive(:update)
+      @product_info_handler.on_barcode("47856\n")
+    end
+
   end
 end
