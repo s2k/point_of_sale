@@ -7,7 +7,7 @@
 # on an LCD screen of sorts.
 #
 class ProductInfoHandler
-  def initialize(product_info_service = nil)
+  def initialize(product_info_service)
     @product_information_service = product_info_service
     @subscribers = []
   end
