@@ -3,7 +3,6 @@
 require_relative 'spec_helper'
 
 describe ProductInfoHandler do
-
   MAX_ID = 2 ** (0.size * 8)
 
   context 'initialisation' do
@@ -28,6 +27,5 @@ describe ProductInfoHandler do
     it 'handles string and integer inputs' do
       expect { @product_info_handler.on_barcode rand(MAX_ID) }.to_not raise_exception
     end
-
   end
 end
