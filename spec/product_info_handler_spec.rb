@@ -31,4 +31,15 @@ describe ProductInfoHandler do
       expect(@product_info_handler.on_barcode("47856\n")).to be_nil
     end
   end
+
+  context 'accepts clients to subscribe and sends updates' do
+    before(:each) do
+      @subscriber = instance_double('Subscriber')
+      allow(@subscriber).to receive :update_display
+    end
+
+    it 'Accepts subscribers' do
+      expect{@product_info_handler.subscribe @subscriber}.to_not raise_exception
+    end
+  end
 end

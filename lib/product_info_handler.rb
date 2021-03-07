@@ -11,6 +11,10 @@ class ProductInfoHandler
     @product_information_service = product_info_service
   end
 
+  def subscribe(client)
+
+  end
+
   # The event handling method
   # To be called form other objects when a barcode is scanned somehow.
   # Will notify subscribed objects with a text message (typically product information and p price).
