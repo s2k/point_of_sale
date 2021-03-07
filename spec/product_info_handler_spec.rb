@@ -28,7 +28,6 @@ describe ProductInfoHandler do
   context 'getting product information (price in particular) from … elsewhere' do
     it 'Again: It can be instantiated' do
       expect(@product_info_service).to receive(:find_product_info_for).with('47856').and_return( { id: '47856', name: 'Thingy', price: 47.11 } )
-      puts "INFO: Prod info: #{@product_info_service.find_product_info_for('47856').inspect}"
       expect(@product_info_handler.on_barcode("47856\n")).to be_nil
     end
   end

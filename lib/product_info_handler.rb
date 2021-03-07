@@ -21,6 +21,7 @@ class ProductInfoHandler
     else
       product_information_service.find_product_info_for(barcode.to_s.strip)
     end
+    nil
   end
 
   private
