@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 # Can retrieve product info from _some_ source.
-# It's unclear where this info comes from yet.
+# It's unclear where this info comes from, yet.
 # Therefore: return a hard coded response, since _for now_ only one product is sold.
 # Decide later if/how to deal with more than one product
 #
-# As the only convenience: In case the product is not fount return the string 'Product not found', since
-# it's unclear if/how reliably the product IDs are the Service will receive
+# As the only convenience: If the product is not found, the string 'Product not found'
+# is returned, since it seems likely that at some point a product ID will enter the
+# system that is not found in the product database.
 #
 class ProductInformationService
   PRODUCTS = {
