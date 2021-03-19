@@ -6,7 +6,7 @@
 # * The passed product_info_service responds to #find_product_info_for
 # * Subscribers respond to :update
 #
-class ProductInfoHandler
+class PointOfSale
   def initialize(product_info_service)
     @product_information_service = product_info_service
     @subscribers = []
@@ -22,8 +22,7 @@ class ProductInfoHandler
   #
   def on_barcode(barcode = nil)
     if barcode.nil?
-      puts 'WARN: No barcode given'
-      return
+      message = 'WARN: No barcode given'
     end
     if product_information_service.nil?
       message = 'WARN: No product info service is set up'

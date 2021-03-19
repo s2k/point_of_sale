@@ -6,11 +6,11 @@ MAX_ID = 2**(0.size * 8)
 MESSAGE_TEXT = "Product: Thingy\nPrice: 47.11"
 VALID_BARCODE = "47856\n"
 
-describe ProductInfoHandler do
+describe PointOfSale do
   before(:example) do
     @product_info_service = instance_double('ProductInformationService')
     allow(@product_info_service).to receive :find_product_info_for
-    @product_info_handler = ProductInfoHandler.new(@product_info_service)
+    @product_info_handler = PointOfSale.new(@product_info_service)
   end
 
   context 'reacting to an incoming bar code' do
