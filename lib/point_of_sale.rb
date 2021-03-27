@@ -21,19 +21,22 @@ class PointOfSale
   # Will notify subscribed objects with a text message (typically product information and p price).
   #
   def on_barcode(barcode = nil)
-    if barcode.nil?
-      message = 'WARN: No barcode given'
-    end
-    if product_information_service.nil?
-      message = 'WARN: No product info service is set up'
-    else
-      message = product_information_service.find_product_info_for(barcode.to_s.strip)
-    end
-    subscribers.each { |s| s.update message }
+    message = message_for(barcode)
+    subscribers.each { |s| s.update(message) }
     nil
   end
 
   private
+
+  def message_for(barcode)
+    if barcode.nil?
+      'WARN: No barcode given'
+    elsif product_information_service.nil?
+      'WARN: No product info service is set up'
+    else
+      product_information_service.find_product_info_for(barcode.to_s.strip)
+    end
+  end
 
   attr_reader :product_information_service, :subscribers
 end
