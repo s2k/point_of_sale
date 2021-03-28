@@ -9,7 +9,7 @@
 # is returned, since it seems likely that at some point a product ID will enter the
 # system that is not found in the product database.
 #
-class ProductInformationService
+class Catalog
   PRODUCTS = {
     '549876' => {
       name: 'Shiny New Thingy',

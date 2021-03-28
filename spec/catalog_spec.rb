@@ -2,9 +2,9 @@
 
 require_relative 'spec_helper'
 
-describe ProductInformationService do
+describe Catalog do
   it 'can be instantiated' do
-    expect { ProductInformationService.new }.not_to raise_exception
+    expect { Catalog.new }.not_to raise_exception
   end
 
   it 'returns a message when queried for unknown product' do
