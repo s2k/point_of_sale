@@ -17,11 +17,11 @@ class Catalog
     }
   }.freeze
 
-  def find_product_info_for product_code
+  def find_product_info_for(product_code)
     format_product_info PRODUCTS[product_code]
   end
 
-  def format_product_info product
+  def format_product_info(product)
     product.nil? ? 'Product not found' : "Product: #{product.fetch(:name)}\nPrice: #{'%2.2f' % product.fetch(:price)}"
   end
 end
