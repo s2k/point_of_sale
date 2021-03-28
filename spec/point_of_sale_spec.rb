@@ -8,29 +8,29 @@ VALID_BARCODE = "47856\n"
 
 describe PointOfSale do
   before(:example) do
-    @product_info_service = instance_double('ProductInformationService')
-    allow(@product_info_service).to receive :find_product_info_for
-    @product_info_handler = PointOfSale.new(@product_info_service)
+    @catalog = instance_double('Catalog')
+    allow(@catalog).to receive :find_product_info_for
+    @check_out_system = PointOfSale.new(@catalog)
   end
 
   context 'reacting to an incoming bar code' do
     it 'reacts to a bar code reading event' do
-      expect { @product_info_handler.on_barcode('1234\n') }.to_not raise_exception
+      expect { @check_out_system.on_barcode('1234\n') }.to_not raise_exception
     end
 
     it 'can be called without an argument' do
-      expect { @product_info_handler.on_barcode }.to_not raise_exception
+      expect { @check_out_system.on_barcode }.to_not raise_exception
     end
 
     it 'handles string and integer inputs' do
-      expect { @product_info_handler.on_barcode rand(MAX_ID) }.to_not raise_exception
+      expect { @check_out_system.on_barcode rand(MAX_ID) }.to_not raise_exception
     end
   end
 
   context 'getting product information (price in particular) from … elsewhere' do
     it 'Again: It can be instantiated' do
-      expect(@product_info_service).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
-      expect(@product_info_handler.on_barcode(VALID_BARCODE)).to be_nil
+      expect(@catalog).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
+      expect(@check_out_system.on_barcode(VALID_BARCODE)).to be_nil
     end
   end
 
@@ -40,30 +40,30 @@ describe PointOfSale do
     end
 
     it 'Accepts subscriber' do
-      expect { @product_info_handler.subscribe @subscriber }.to_not raise_exception
+      expect { @check_out_system.subscribe @subscriber }.to_not raise_exception
     end
 
     it 'Notifies subscriber when a barcode event happens' do
-      expect(@product_info_service).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
-      expect { @product_info_handler.subscribe @subscriber }.to_not raise_exception
+      expect(@catalog).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
+      expect { @check_out_system.subscribe @subscriber }.to_not raise_exception
       expect(@subscriber).to receive(:update).with(MESSAGE_TEXT)
-      @product_info_handler.on_barcode(VALID_BARCODE)
+      @check_out_system.on_barcode(VALID_BARCODE)
     end
 
     it 'No one is notified, when nobody subscribes' do
-      expect(@product_info_service).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
+      expect(@catalog).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
       expect(@subscriber).not_to receive(:update)
-      @product_info_handler.on_barcode(VALID_BARCODE)
+      @check_out_system.on_barcode(VALID_BARCODE)
     end
 
     it 'Notifies all subscribers when a barcode event happens' do
       subscribers = [@subscriber, instance_double('Display')]
-      expect(@product_info_service).to receive(:find_product_info_for).once.with('47856').and_return(MESSAGE_TEXT)
+      expect(@catalog).to receive(:find_product_info_for).once.with('47856').and_return(MESSAGE_TEXT)
       subscribers.each do |s|
-        expect { @product_info_handler.subscribe s }.to_not raise_exception
+        expect { @check_out_system.subscribe s }.to_not raise_exception
         expect(s).to receive(:update).with(MESSAGE_TEXT)
       end
-      @product_info_handler.on_barcode(VALID_BARCODE)
+      @check_out_system.on_barcode(VALID_BARCODE)
     end
   end
 end
