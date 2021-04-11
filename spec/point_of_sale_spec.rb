@@ -36,30 +36,30 @@ describe PointOfSale do
 
   context 'accepts clients to subscribe and sends updates' do
     before(:each) do
-      @subscriber = instance_double('Subscriber')
+      @display = instance_double('Display')
     end
 
     it 'Accepts subscriber' do
-      expect { @check_out_system.subscribe @subscriber }.to_not raise_exception
+      expect { @check_out_system.subscribe @display }.to_not raise_exception
     end
 
     it 'Notifies subscriber when a barcode event happens' do
       expect(@catalog).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
-      expect { @check_out_system.subscribe @subscriber }.to_not raise_exception
-      expect(@subscriber).to receive(:update).with(MESSAGE_TEXT)
+      expect { @check_out_system.subscribe @display }.to_not raise_exception
+      expect(@display).to receive(:update).with(MESSAGE_TEXT)
       @check_out_system.on_barcode(VALID_BARCODE)
     end
 
     it 'No one is notified, when nobody subscribes' do
       expect(@catalog).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
-      expect(@subscriber).not_to receive(:update)
+      expect(@display).not_to receive(:update)
       @check_out_system.on_barcode(VALID_BARCODE)
     end
 
-    it 'Notifies all subscribers when a barcode event happens' do
-      subscribers = [@subscriber, instance_double('Display')]
+    it 'Notifies all displays when a barcode event happens' do
+      displays = [@display, instance_double('Display')]
       expect(@catalog).to receive(:find_product_info_for).once.with('47856').and_return(MESSAGE_TEXT)
-      subscribers.each do |s|
+      displays.each do |s|
         expect { @check_out_system.subscribe s }.to_not raise_exception
         expect(s).to receive(:update).with(MESSAGE_TEXT)
       end
