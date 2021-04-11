@@ -10,8 +10,8 @@ describe PointOfSale do
   before(:example) do
     @catalog = instance_double('Catalog')
     @display = instance_double( 'Display')
-    allow(@catalog).to receive :find_product_info_for
-    allow(@display).to receive :update
+    allow(@catalog).to receive(:find_product_info_for).once
+    expect(@display).to receive( :update).once
     @check_out_system = PointOfSale.new(@catalog, @display)
   end
 
