@@ -3,12 +3,12 @@
 # A ProductInfoHandler accepts input from (presumably) a bar code reader and sends the
 # passed information to subscribed objects.
 # Assumptions:
-# * The passed product_info_service responds to #find_product_info_for
+# * The passed catalog responds to #find_product_info_for
 # * Subscribers respond to :update
 #
 class PointOfSale
-  def initialize(product_info_service)
-    @product_information_service = product_info_service
+  def initialize(catalog)
+    @catalog = catalog
     @subscribers = []
   end
 
@@ -31,12 +31,12 @@ class PointOfSale
   def message_for(barcode)
     if barcode.nil?
       'WARN: No barcode given'
-    elsif product_information_service.nil?
+    elsif catalog.nil?
       'WARN: No product info service is set up'
     else
-      product_information_service.find_product_info_for(barcode.to_s.strip)
+      catalog.find_product_info_for(barcode.to_s.strip)
     end
   end
 
-  attr_reader :product_information_service, :subscribers
+  attr_reader :catalog, :subscribers
 end
