@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-# The simplest MessageReceiver I can think of,
-# prints received messages to STDOUT
+# The simplest Display I can think of.
+# * Uses STDOUT uf nothing else is provided
+# * Reacts to updates that include a message _name_ and arguments
 #
-class MessageReceiver
+class Display
   def initialize(io = STDOUT)
     @io = io
   end
+
   def update(received_message)
     io.puts "#{self.class} says:"
     io.puts received_message

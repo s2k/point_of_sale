@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe MessageReceiver do
-  subject { MessageReceiver.new StringIO.new }
+describe Display do
+  subject { Display.new StringIO.new }
 
   it 'should respond to update' do
     expect { subject.update('message') }.to_not raise_exception

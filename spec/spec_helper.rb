@@ -3,4 +3,4 @@
 require 'rspec'
 require_relative '../lib/point_of_sale'
 require_relative '../lib/catalog'
-require_relative '../lib/message_receiver'
+require_relative '../lib/display'
