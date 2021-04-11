@@ -5,6 +5,8 @@
 # * Reacts to updates that include a message _name_ and arguments
 #
 class Display
+  private attr_reader :io
+
   def initialize(io = STDOUT)
     @io = io
   end
@@ -15,6 +17,4 @@ class Display
     io.puts
   end
 
-  private
-  attr_reader :io
 end
