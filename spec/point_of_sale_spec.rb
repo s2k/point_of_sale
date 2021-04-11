@@ -10,7 +10,7 @@ describe PointOfSale do
   before(:example) do
     @catalog = instance_double('Catalog')
     allow(@catalog).to receive :find_product_info_for
-    @check_out_system = PointOfSale.new(@catalog)
+    @check_out_system = PointOfSale.new(@catalog, Display.new(StringIO.new))
   end
 
   context 'reacting to an incoming bar code' do

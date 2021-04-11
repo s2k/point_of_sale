@@ -7,9 +7,12 @@
 # * Subscribers respond to :update
 #
 class PointOfSale
-  def initialize(catalog)
+  private attr_reader :catalog, :subscribers
+
+  def initialize(catalog, display = Display.new)
     @catalog = catalog
     @subscribers = []
+    @display = display
   end
 
   def subscribe(client)
@@ -37,6 +40,4 @@ class PointOfSale
       catalog.find_product_info_for(barcode.to_s.strip)
     end
   end
-
-  attr_reader :catalog, :subscribers
 end
