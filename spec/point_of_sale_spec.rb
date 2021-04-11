@@ -9,8 +9,10 @@ VALID_BARCODE = "47856\n"
 describe PointOfSale do
   before(:example) do
     @catalog = instance_double('Catalog')
+    @display = instance_double( 'Display')
     allow(@catalog).to receive :find_product_info_for
-    @check_out_system = PointOfSale.new(@catalog, Display.new(StringIO.new))
+    allow(@display).to receive :update
+    @check_out_system = PointOfSale.new(@catalog, @display)
   end
 
   context 'reacting to an incoming bar code' do
@@ -31,39 +33,6 @@ describe PointOfSale do
     it 'Again: It can be instantiated' do
       expect(@catalog).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
       expect(@check_out_system.on_barcode(VALID_BARCODE)).to be_nil
-    end
-  end
-
-  context 'accepts clients to subscribe and sends updates' do
-    before(:each) do
-      @display = instance_double('Display')
-    end
-
-    it 'Accepts subscriber' do
-      expect { @check_out_system.subscribe @display }.to_not raise_exception
-    end
-
-    it 'Notifies subscriber when a barcode event happens' do
-      expect(@catalog).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
-      expect { @check_out_system.subscribe @display }.to_not raise_exception
-      expect(@display).to receive(:update).with(MESSAGE_TEXT)
-      @check_out_system.on_barcode(VALID_BARCODE)
-    end
-
-    it 'No one is notified, when nobody subscribes' do
-      expect(@catalog).to receive(:find_product_info_for).with('47856').and_return(MESSAGE_TEXT)
-      expect(@display).not_to receive(:update)
-      @check_out_system.on_barcode(VALID_BARCODE)
-    end
-
-    it 'Notifies all displays when a barcode event happens' do
-      displays = [@display, instance_double('Display')]
-      expect(@catalog).to receive(:find_product_info_for).once.with('47856').and_return(MESSAGE_TEXT)
-      displays.each do |s|
-        expect { @check_out_system.subscribe s }.to_not raise_exception
-        expect(s).to receive(:update).with(MESSAGE_TEXT)
-      end
-      @check_out_system.on_barcode(VALID_BARCODE)
     end
   end
 end

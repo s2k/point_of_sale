@@ -7,25 +7,19 @@
 # * Subscribers respond to :update
 #
 class PointOfSale
-  private attr_reader :catalog, :subscribers
+  private attr_reader :catalog, :display
 
   def initialize(catalog, display = Display.new)
     @catalog = catalog
-    @subscribers = []
     @display = display
-  end
-
-  def subscribe(client)
-    @subscribers << client
   end
 
   # The event handling method
   # To be called form other objects when a barcode is scanned somehow.
-  # Will notify subscribed objects with a text message (typically product information and p price).
+  # Will update the display
   #
   def on_barcode(barcode = nil)
-    message = message_for(barcode)
-    subscribers.each { |s| s.update(message) }
+    display.update message_for(barcode)
     nil
   end
 
